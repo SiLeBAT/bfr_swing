@@ -42,14 +42,25 @@ public class FilePanel extends JPanel implements ActionListener, TextListener {
 	private List<FileListener> listeners;
 
 	private int dialogType;
+	private int selectionMode;
 	private boolean acceptAllFiles;
 	private List<FileFilter> fileFilters;
 
 	private JButton button;
 	private StringTextField field;
 
+
 	public FilePanel(String name, int dialogType, int columns) {
+		this(name, dialogType, JFileChooser.FILES_AND_DIRECTORIES, columns);
+	}
+
+	/**
+	 * @param selectionMode {@link JFileChooser#DIRECTORIES_ONLY} or {@link JFileChooser#FILES_AND_DIRECTORIES}.
+	 */
+	public FilePanel(String name, int dialogType, int selectionMode, int columns) {
 		this.dialogType = dialogType;
+		this.selectionMode = selectionMode;
+
 		acceptAllFiles = true;
 		fileFilters = new ArrayList<>();
 
@@ -127,6 +138,7 @@ public class FilePanel extends JPanel implements ActionListener, TextListener {
 		}
 
 		fileChooser.setAcceptAllFileFilterUsed(acceptAllFiles);
+		fileChooser.setFileSelectionMode(selectionMode);
 
 		for (FileFilter filter : fileFilters) {
 			fileChooser.addChoosableFileFilter(filter);
